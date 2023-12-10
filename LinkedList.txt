@@ -1,0 +1,153 @@
+class LinkedList: 
+    # inner class Node
+    class Node:
+        #constructor of the inner class Node
+        def __init__(self, data=None, next = None):
+            self.data = data
+            self.next = next
+    
+    #constructor of the Outer class(LinkedList)        
+    def __init__(self):
+        self.head = None  
+        self.size = 0
+    
+    # inserts a new node at the start/head of the linked list
+    def insertAtHead(self, element):
+        # create a new node
+        newNode = self.Node(element, self.head)
+        if newNode == None: # if new Node is not created successfully, then return to caller
+            print("Couldn't create a new node")
+            return
+        self.head = newNode # if node is created successfully, then new node will the head of the linked list
+        self.size += 1 # increment the size by 1 as one new node is been inserted
+    
+    
+    # inserts a node after a particular node( whose value is passed an argument, previousNodeValue) 
+    def insert_in_between(self, element, previousNodeValue):
+        #create a  new node 
+        newNode = self.Node(element)
+        if newNode == None:
+            print("Couldn't create a new node")
+            return  
+        
+        currentNode = self.head
+        # this loop traverses the linked list until it reaches the node after which we want
+        # to insert the new node 
+        while(currentNode):
+            if currentNode.data == previousNodeValue:
+                previousNode = currentNode 
+                break 
+            else:
+                previousNode =currentNode
+                currentNode = currentNode.next
+        # update nextNode's next to next of previous node
+        newNode.next = previousNode.next 
+        # update the previousNode's next as newNode
+        previousNode.next = newNode 
+        self.size += 1 # increment size by one
+        
+        
+    # inserts a new node at the tail of the linked list
+    def insert_at_tail(self, element):
+        #create a new node
+        newNode = self.Node(element)
+        currentNode = self.head 
+        # traverse to the tail of the linked list
+        while(currentNode):
+            if currentNode.next== None:
+                tailNode = currentNode
+                break
+            else: 
+                tail = currentNode
+                currentNode = currentNode.next
+        
+        #update the tail of the linked list to new node
+        tail.next = newNode 
+        #increment the size by 1
+        self.size = self.size + 1 
+    
+    # this method deletes a node from the head of the linked list and returns the value to the user
+    def delete_at_head(self):
+        # if linked list is empty then delete operation cann't be performed, hence return to the caller
+        if self.size == 0:
+            print("Linked list is empty, delete operation cann't be performed!!!")
+            return
+        deletedValue = self.head.data
+        # head will be become head.next
+        self.head = self.head.next 
+        # decrement the size by 1
+        self.size = self.size -1
+        return deletedValue # return the deleted value
+      
+    # this deletes a node with a given value(element)
+    def delete_given_node(self, element):
+        # checks if linked list is empty, delete cann't be performed if Linked list is empty
+        if self.size == 0:
+            print("Linked list is empty, delete operation cann't be performed!!!") 
+            return
+        #Traverse to the node which needs to be deleted, keep track of the previous node also
+        # previous node's next needs to be updated to delete the current node
+        currentNode = self.head 
+        previousNode =None
+        while(currentNode):
+            if currentNode.data == element:
+                break 
+            else:
+                previousNode = currentNode 
+                currentNode = currentNode.next
+        if(previousNode !=None):
+            # previousNode's next node will become the   currentNode's next node
+            previousNode.next = currentNode.next
+            
+        else:
+            print("Either the given value is not present in the linked list or it is the head node")
+            return
+            
+        return currentNode.data # return the deleted value
+    
+    # this method deletes the last node and returns its value to the caller
+    def delete_at_tail(self):
+        # checks if linked list is empty, delete cann't be performed if Linked list is empty
+        if self.size == 0:
+            print("Linked list is empty, delete operation cann't be performed!!!")
+            return
+        #traverse to the last node, keeping track of the last node
+        currentNode = self.head
+        previousNode = None
+        tailNode = None
+        while(currentNode):
+            if currentNode.next == None:
+                tailNode = currentNode 
+                break 
+            else:
+                currentNode = currentNode.next 
+                previousNode = currentNode 
+        
+        deletedValue = tailNode.data 
+        previousNode.next =None 
+        return deletedValue
+        
+    # this method prints each node's data   
+    def traverseLinkedList(self):
+        # take one identifier(currentNode) to traverse the linked list from head to last node of linked list
+        currentNode = self.head 
+        while(currentNode):
+            # print the data of the current node
+            print(currentNode.data)
+            # update the currentNode to next node of the LinkedList
+            currentNode = currentNode.next
+         
+       
+
+
+if __name__ == "__main__":
+    l1 = LinkedList()
+    l1.delete_at_head()
+    l1.insertAtHead(23)
+    l1.insertAtHead(45)
+    l1.insert_in_between(81, 45)
+    l1.insert_in_between(89, 42)
+    l1.insert_at_tail(90)
+    print("Deleted value is : ",l1.delete_at_tail())
+    print("deleted value is : ", l1.delete_given_node(23))
+    l1.traverseLinkedList()
